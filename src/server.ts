@@ -38,7 +38,7 @@ import { url } from 'inspector';
       res.status(400).send('Image url is required');
     }
 
-    const filtered_image = await filterImageFromURL(image_URL);
+    const filtered_image:any = await filterImageFromURL(image_URL);
 
     res.status(200).sendFile(filtered_image, () => {
       deleteLocalFiles([filtered_image]);
@@ -48,23 +48,6 @@ import { url } from 'inspector';
   });
   //! END @TODO1
 
-  app.get("/filteredimage", async (req: express.Request, res: express.Response) => {
-    let { image_url } = req.query;
-    if ( !image_url ) {
-      return res.status(400).send("image_url is required");
-    }
-    filterImageFromURL(image_url)
-    .then(filteredpath => {
-      return res.status(200).sendFile(filteredpath, err => {
-        if (!err) {
-          let filesList: string[] = [filteredpath];
-          deleteLocalFiles(filesList);
-        }
-      });
-    }).catch(() => {
-      return res.status(422).send("error when processing the image");
-    });
-} );  
 
   // Root Endpoint
   // Displays a simple message to the user
